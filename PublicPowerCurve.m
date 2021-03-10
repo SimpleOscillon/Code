@@ -16,26 +16,27 @@ INPUT DESCRIPTION
     Radius = Physical size of the S1 grid. If Radius is chosen too large, then
     there may not be enough precision to satisfy the boundary conditions.
 
-    RadiusRad = Physical size of the grid on which the radiation is
-    calculated. Generally, we must have RadiusRad ≥ Radius. Outside of
-    Radius, S1 is taken to be identically zero.
-
     dr = Physical size of the lattice spacing. 
 
     Vcoeff = The potential coefficients, whose sum must be less than or
-    equal to 1.
+    equal to omegaMax^2.
+    
+    omegaMax = Fundamental periodicity of the potential.
 
     NHarmonics = Number of harmonics to calculate.
 
     OmegaList = List of the physical frequencies of the oscillon at which
     to compute the output power.
+    
+    LinRef = Number of additional grid points to add to the linear solution
+    per grid point of the fundamental mode shooting.
 
+    S10 = One tenth the range of central field values to scan over in the fundamental
+    mode shooting.
 
 =====================================================================
 
 %}
-    RadiusRad = Radius; %The radius out to which the perturbative harmonics are computed.
-                        %This can be changed to a larger value.
                         
     PowerListHarmonics = zeros(length(OmegaList),NHarmonics);
     EnergyList = zeros(size(OmegaList));
@@ -52,7 +53,7 @@ INPUT DESCRIPTION
         disp(omega)
         index = index + 1;
         r = linspace(0,Radius,(Radius/dr) + 1)';
-        [S, C, ~] = PublicPerturbativeOscillon(Radius,RadiusRad,dr,Vcoeff,omegaMax,NHarmonics,omega,LinRef,S10);
+        [S, C, ~] = PublicPerturbativeOscillon(Radius,dr,Vcoeff,omegaMax,NHarmonics,omega,LinRef,S10);
         
         SList = [SList S];
         CList = [CList C];
