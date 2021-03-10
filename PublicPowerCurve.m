@@ -1,4 +1,4 @@
-function [PowerVsOmegaList,EnergyVsOmegaList,Lifetime,PowerListHarmonics,SList,CList,r] = PublicPowerCurve(Radius,dr,Vcoeff,omegaMax,NHarmonics,OmegaList,LinRef,S10)
+function [PowerVsOmegaList,EnergyVsOmegaList,Lifetime,PowerListHarmonics,SList,CList,r] = PublicPowerCurve(Radius,dr,Vcoeff,thetaMax,NHarmonics,OmegaList,LinRef,S10)
 %{
 
 FUNCTION DESCRIPTION
@@ -21,7 +21,7 @@ INPUT DESCRIPTION
     Vcoeff = The potential coefficients, whose sum must be less than or
     equal to omegaMax^2.
     
-    omegaMax = Fundamental periodicity of the potential.
+    thetaMax = Fundamental periodicity of the potential.
 
     NHarmonics = Number of harmonics to calculate.
 
@@ -44,8 +44,8 @@ INPUT DESCRIPTION
     SList = [];
     CList = [];
     
-    if sum(Vcoeff) ~= omegaMax^2
-        Vcoeff = [Vcoeff omegaMax^2 - sum(Vcoeff)];
+    if sum(Vcoeff) ~= thetaMax^2
+        Vcoeff = [Vcoeff thetaMax^2 - sum(Vcoeff)];
     end
     
     index = 0;
@@ -54,7 +54,7 @@ INPUT DESCRIPTION
         waitbar(index/length(OmegaList),f,['Frequency currently being computed: omega = ' num2str(omega)])
         index = index + 1;
         r = linspace(0,Radius,(Radius/dr) + 1)';
-        [S, C, ~] = PublicPerturbativeOscillon(Radius,dr,Vcoeff,omegaMax,NHarmonics,omega,LinRef,S10);
+        [S, C, ~] = PublicPerturbativeOscillon(Radius,dr,Vcoeff,thetaMax,NHarmonics,omega,LinRef,S10);
         
         SList = [SList S];
         CList = [CList C];
@@ -69,7 +69,7 @@ INPUT DESCRIPTION
         S1Val = S(1:end-1,1);
         S1Potential = 0;
         for mm = 1 : length(Vcoeff)
-            S1Potential = S1Potential + (Vcoeff(mm)/mm^2) * (1 - besselj(0,mm * S1Val/omegaMax));
+            S1Potential = S1Potential + (Vcoeff(mm)/mm^2) * (1 - besselj(0,mm * S1Val/thetaMax));
         end
         r = r(1 : length(S1Val));
         EnergyList(index) = sum(4 * pi * dr * r.^2 .* ((S1Derivative/2).^2 + omega^2 * (S1Val/2).^2 + S1Potential));
