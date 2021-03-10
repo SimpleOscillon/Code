@@ -1,4 +1,4 @@
-function S1 = PublicFundamentalModeShooting(Radius,dr,Vcoeff,omegaMax,omega,S10)
+function S1 = PublicFundamentalModeShooting(Radius,dr,Vcoeff,thetaMax,omega,S10)
 
 %{
 
@@ -18,7 +18,9 @@ INPUT DESCRIPTION
     dr = Physical size of the lattice spacing. 
 
     Vcoeff = The potential coefficients, whose sum must be less than or
-    equal to omegaMax^2.
+    equal to thetaMax^2.
+    
+    thetaMax = Fundamental periodicity of the potential.
 
     omega = The physical frequency of the oscillon.
     
@@ -37,8 +39,8 @@ INPUT DESCRIPTION
     gridSize = round(Radius / dr);
     
     %Enforce that Vcoeff sums to omegaMax^2.
-    if sum(Vcoeff) ~= omegaMax^2
-        Vcoeff = [Vcoeff omegaMax^2 - sum(Vcoeff)];
+    if sum(Vcoeff) ~= thetaMax^2
+        Vcoeff = [Vcoeff thetaMax^2 - sum(Vcoeff)];
     end
     
     %Number of digits known about initial condition.
@@ -63,7 +65,7 @@ INPUT DESCRIPTION
                 %Calculate the effective potential
                 Veff = 0;
                 for mm = 1 : length(Vcoeff)
-                    Veff = Veff + (Vcoeff(mm)/(mm * omegaMax)) * besselj(1,mm * S1(ii + 1)/omegaMax);
+                    Veff = Veff + (Vcoeff(mm)/(mm * thetaMax)) * besselj(1,mm * S1(ii + 1)/thetaMax);
                 end
                 
                 %Finite difference solver
