@@ -3,11 +3,8 @@ function [V0,DomS,Domc,Som] = PublicPerturbativeHigherHarmonicPotential(Radius,d
 
 FUNCTION DESCRIPTION
     
-    Generates the matrix operator D1, which acts on the linear state
-    vectors S = [S3 S5 ... ] and C = [C3 C5 ... ], as well as the
-    inhomogneous term V0 in the S equation. Thus, S = -D1\V0 is the
-    quasi-breather solution at leading order, while C is represented by the
-    eigenvectors of D1.
+    Generates the matrix operator which acts on the linear state
+    vectors S = [S3 S5 ... ] and C = [C3 C5 ... ], and the source term.
     
 =====================================================================
 
@@ -21,11 +18,14 @@ INPUT DESCRIPTION
     NHarmonics = Number of harmonics to calculate.
 
     Vcoeff = The potential coefficients, whose sum must be less than or
-    equal to 1.
+    equal to omegaMax^2.
 
     S1 = Oscillon fundamental mode.
 
     omega = Fundamental frequency of the oscillon in units of the mass.
+    
+    LinRef = Number of additional grid-points per grid-point of the S1
+    shooting code.
     
 =====================================================================
 
