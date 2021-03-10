@@ -42,7 +42,10 @@ OmegaList = 0.80:0.01:0.94;
                                             %radius coordinates, r.
 dE = EnergyVsOmegaList(2:end,2) - EnergyVsOmegaList(1:end-1,2) ;
 
-log10(Lifetime)
+disp(['log_10(lifetime) = ' num2str(log10(Lifetime))])
 figure(1)
 hold on
 plot(PowerVsOmegaList(2:end,1),log10(-PowerVsOmegaList(2:end,2).* (dE < 0)))
+title('Power versus Frequency')
+xlabel('\omega/m')
+ylabel('log_{10}(Power/f^2)')
