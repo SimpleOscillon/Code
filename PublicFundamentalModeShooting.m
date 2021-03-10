@@ -18,9 +18,13 @@ INPUT DESCRIPTION
     dr = Physical size of the lattice spacing. 
 
     Vcoeff = The potential coefficients, whose sum must be less than or
-    equal to 1.
+    equal to omegaMax^2.
 
-    omega = Physical frequency of the oscillon.
+    omega = The physical frequency of the oscillon.
+    
+    S10 = One tenth of the range of central field amplitudes to search over 
+    in the shooting code. If the code starts outputting nonsense, try 
+    adjusting this.
 
 =====================================================================
 
@@ -32,7 +36,7 @@ INPUT DESCRIPTION
     %Determine the size of the grid.
     gridSize = round(Radius / dr);
     
-    %Enforce that Vcoeff sums to 1.
+    %Enforce that Vcoeff sums to omegaMax^2.
     if sum(Vcoeff) ~= omegaMax^2
         Vcoeff = [Vcoeff omegaMax^2 - sum(Vcoeff)];
     end
@@ -66,16 +70,8 @@ INPUT DESCRIPTION
                 S1(ii + 2) = (2 * dr^2) * Veff + (-1 + (2/ii)) * S1(ii) + (2 - (2/ii)  - (dr * omega)^2) * S1(ii + 1);
                 
             end
-%             
-%             figure(1)
-%             hold on
-%             plot(S1)
-%             pause(0.1)
-%             
+   
             positive(jj) = min(S1);
-            
-            %Find the smallest initial condition that leads to an always
-            %positive S1
             lastidx = nextidx;
             nextidx = find(positive > 0, 1, 'last');
             
