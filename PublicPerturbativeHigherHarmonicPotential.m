@@ -1,4 +1,4 @@
-function [V0,DomS,Domc,Som] = PublicPerturbativeHigherHarmonicPotential(Radius,dr,NHarmonics,Vcoeff,omegaMax,S1,omega,LinRef)
+function [V0,DomS,Domc,Som] = PublicPerturbativeHigherHarmonicPotential(Radius,dr,NHarmonics,Vcoeff,thetaMax,S1,omega,LinRef)
 %{
 
 FUNCTION DESCRIPTION
@@ -19,6 +19,8 @@ INPUT DESCRIPTION
 
     Vcoeff = The potential coefficients, whose sum must be less than or
     equal to omegaMax^2.
+    
+    thetaMax = Fundamental periodicity of the potential.
 
     S1 = Oscillon fundamental mode.
 
@@ -31,8 +33,8 @@ INPUT DESCRIPTION
 
 %}
     
-    if sum(Vcoeff) ~= omegaMax^2
-        Vcoeff = [Vcoeff omegaMax^2 - sum(Vcoeff)];
+    if sum(Vcoeff) ~= thetaMax^2
+        Vcoeff = [Vcoeff thetaMax^2 - sum(Vcoeff)];
     end
     
     GridSize = length(S1);
@@ -60,8 +62,8 @@ INPUT DESCRIPTION
                 VNLc = VNLc - (-2/(dr^2)) * NabC - ((N * omega)^2) * OmegaMultiplier;
             end
             for mm = 1 : length(Vcoeff)
-                VNLS = VNLS +  (Vcoeff(mm)/(omegaMax^2)) * (besselj(N - L,mm * S1/omegaMax) - besselj(N + L,mm * S1/omegaMax)) .* OmegaMultiplier;
-                VNLc = VNLc +  (Vcoeff(mm)/(omegaMax^2)) * (besselj(N - L,mm * S1/omegaMax) + besselj(N + L,mm * S1/omegaMax)) .* OmegaMultiplier;
+                VNLS = VNLS +  (Vcoeff(mm)/(thetaMax^2)) * (besselj(N - L,mm * S1/thetaMax) - besselj(N + L,mm * S1/thetaMax)) .* OmegaMultiplier;
+                VNLc = VNLc +  (Vcoeff(mm)/(thetaMax^2)) * (besselj(N - L,mm * S1/thetaMax) + besselj(N + L,mm * S1/thetaMax)) .* OmegaMultiplier;
             end
             row = harmonicN;
             column = NHarmonics + harmonicN - harmonicL;
@@ -108,7 +110,7 @@ INPUT DESCRIPTION
         N = 2 * harmonic + 1;
         
         for mm = 1 : length(Vcoeff)
-            VN = VN + 2 * (Vcoeff(mm)/(mm * omegaMax)) * besselj(N,mm * S1/omegaMax) .* rHR;
+            VN = VN + 2 * (Vcoeff(mm)/(mm * thetaMax)) * besselj(N,mm * S1/thetaMax) .* rHR;
         end
         V0((harmonic - 1) * BigGrid + 1 : harmonic * BigGrid) = VN;
     end
