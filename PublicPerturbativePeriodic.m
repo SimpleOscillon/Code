@@ -10,7 +10,7 @@ Vcoeff = [];
 
                 %Fundamental periodicity of the periodic potential in units
                 %of f.
-omegaMax = 1;   
+thetaMax = 1;   
 
 
 Radius = 15;    %Radius out to which the fundamental bound harmonic is computed.
@@ -29,7 +29,7 @@ S10 = 5;        %Shooting range: if result does not converge make this number
 NHarmonics = 2; %Number of perturbative harmonics to compute
 OmegaList = 0.80:0.01:0.94;
 [PowerVsOmegaList,EnergyVsOmegaList,Lifetime,PowerInHarmonics,SList,CList,r]...
-    = PublicPowerCurve(Radius,dr,Vcoeff,omegaMax,NHarmonics,OmegaList,LinRef,S10);
+    = PublicPowerCurve(Radius,dr,Vcoeff,thetaMax,NHarmonics,OmegaList,LinRef,S10);
                                             %these last four arguments can
                                             %be used to extract the 
                                             %1) Power stored in each
