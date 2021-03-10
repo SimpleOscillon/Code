@@ -49,8 +49,9 @@ INPUT DESCRIPTION
     end
     
     index = 0;
+    f = waitbar(0,'Frequency currently being computed: omega = ');
     for omega = OmegaList
-        disp(omega)
+        waitbar(index/length(OmegaList),f,['Frequency currently being computed: omega = ' num2str(omega)])
         index = index + 1;
         r = linspace(0,Radius,(Radius/dr) + 1)';
         [S, C, ~] = PublicPerturbativeOscillon(Radius,dr,Vcoeff,omegaMax,NHarmonics,omega,LinRef,S10);
@@ -86,4 +87,5 @@ INPUT DESCRIPTION
     PowerVsOmegaList = [OmegaList' PowerList];
     EnergyVsOmegaList = [OmegaList' EnergyList'];
     
+    close(f)
 end
