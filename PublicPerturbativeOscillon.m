@@ -1,4 +1,4 @@
-function [S, C, r] = PublicPerturbativeOscillon(Radius,RadiusRad,dr,Vcoeff,omegaMax,NHarmonics,omega,LinRef,S10)
+function [S, C, r] = PublicPerturbativeOscillon(Radius,dr,Vcoeff,omegaMax,NHarmonics,omega,LinRef,S10)
 %{
 
 FUNCTION DESCRIPTION
@@ -14,20 +14,21 @@ INPUT DESCRIPTION
     Radius = Physical size of the S1 grid. If Radius is chosen too large, then
     there may not be enough precision to satisfy the boundary conditions.
 
-    RadiusRad = Physical size of the grid on which the radiation is
-    calculated. Generally, we must have RadiusRad ≥ Radius. Outside of
-    Radius, S1 is taken to be identically zero.
-
     dr = Physical size of the lattice spacing. 
 
+    omegaMax = periodicity of the potential.
+
     Vcoeff = The potential coefficients, whose sum must be less than or
-    equal to 1.
+    equal to omegaMax^2.
 
     NHarmonics = Number of harmonics to calculate.
 
     omega = Physical frequency of the oscillon.
+    
+    LinRef = Number of additional grid-points added to the linear harmonic equation
+    per grid point in the S1 shooting code.
 
-
+    S10 = One tenth of the range of central values to scan over in the shooting code.
 =====================================================================
 
 %}
@@ -36,7 +37,7 @@ INPUT DESCRIPTION
         Vcoeff = [Vcoeff omegaMax^2 - sum(Vcoeff)];
     end
     
-    RadiusRad = RadiusRad + dr;
+    RadiusRad = Radius + dr;
     
     NRad = round(RadiusRad/dr);
     
