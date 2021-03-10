@@ -13,7 +13,8 @@ The high-level interface can be accessed by running the code in `PublicPerturbat
 This code outputs:
 - oscillon lifetime estimate in the specificed frequency range, expressed as a logarithm in base-10.
 - the plot of log-base-10 power radiated versus frequency.
-- other outputs can be accessed through the function `PublicPowerCurve.m` in order [PowerVsOmegaList,EnergyVsOmegaList,Lifetime,PowerInHarmonics,SList,CList,r]
+- other outputs can be accessed through the function `PublicPowerCurve.m` in order 
+  - `[PowerVsOmegaList,EnergyVsOmegaList,Lifetime,PowerInHarmonics,SList,CList,r]`
   - The list of radiated power and frequency, labeled `PowerVsOmegaList`
   - The list of bound oscillon energies and frequency, labeled `EnergyVsOmegaList`
   - The estimated lifetime `Lifetime`
