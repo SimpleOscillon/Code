@@ -1,4 +1,4 @@
-function [S, C, r] = PublicPerturbativeOscillon(Radius,dr,Vcoeff,omegaMax,NHarmonics,omega,LinRef,S10)
+function [S, C, r] = PublicPerturbativeOscillon(Radius,dr,Vcoeff,thetaMax,NHarmonics,omega,LinRef,S10)
 %{
 
 FUNCTION DESCRIPTION
@@ -16,7 +16,7 @@ INPUT DESCRIPTION
 
     dr = Physical size of the lattice spacing. 
 
-    omegaMax = periodicity of the potential.
+    thetaMax = periodicity of the potential.
 
     Vcoeff = The potential coefficients, whose sum must be less than or
     equal to omegaMax^2.
@@ -33,18 +33,18 @@ INPUT DESCRIPTION
 
 %}
 
-    if sum(Vcoeff) ~= omegaMax^2
-        Vcoeff = [Vcoeff omegaMax^2 - sum(Vcoeff)];
+    if sum(Vcoeff) ~= thetaMax^2
+        Vcoeff = [Vcoeff thetaMax^2 - sum(Vcoeff)];
     end
     
     RadiusRad = Radius + dr;
     
     NRad = round(RadiusRad/dr);
     
-    S1 = PublicFundamentalModeShooting(Radius,dr,Vcoeff,omegaMax,omega,S10);
+    S1 = PublicFundamentalModeShooting(Radius,dr,Vcoeff,thetaMax,omega,S10);
     S1 = vertcat(S1,zeros(NRad - length(S1),1));
     
-    [V0,DomS,Domc,Som] = PublicPerturbativeHigherHarmonicPotential(RadiusRad,dr,NHarmonics,Vcoeff,omegaMax,S1,omega,LinRef);
+    [V0,DomS,Domc,Som] = PublicPerturbativeHigherHarmonicPotential(RadiusRad,dr,NHarmonics,Vcoeff,thetaMax,S1,omega,LinRef);
     
     BigMatrix = [DomS -Som;Som Domc];
     BigVector = [-V0;zeros(size(V0))];
