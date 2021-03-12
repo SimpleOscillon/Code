@@ -34,8 +34,9 @@ OmegaList = 0.80:0.01:0.94;
                                             %be used to extract the 
                                             %1) Power stored in each
                                             %harmonic,
-                                            %2) The PQB profile, multiplied
-                                            %by the radius r,
+                                            %2) The PQB profile, where higher
+                                            %harmonics are multiplied by the
+                                            %radius r,
                                             %3) The OD profile, also
                                             %multiplied by the radius r,
                                             %4) The corresponding list of
