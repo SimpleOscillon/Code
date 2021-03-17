@@ -11,8 +11,8 @@ The high-level interface can be accessed by running the code in `Interface.m`, w
 - `OmegaList` (default range `0.80:0.01:0.94`) determines the values of the frequency at which the oscillon is computed.
 
 This code outputs:
-- oscillon lifetime estimate in the specificed frequency range, expressed as a logarithm in base-10.
-- the plot of log-base-10 power radiated versus frequency.
+- oscillon lifetime estimate in the specificed frequency range, expressed as a logarithm in base-10 in units of the mass.
+- the plot of log-base-10 power radiated versus frequency in units of `f^2`.
 - other outputs can be accessed through the function `PublicPowerCurve.m` in order 
   - `[PowerVsOmegaList,EnergyVsOmegaList,Lifetime,PowerInHarmonics,SList,CList,r]`
   - The list of radiated power and frequency, labeled `PowerVsOmegaList`
