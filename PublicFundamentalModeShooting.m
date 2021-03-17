@@ -4,7 +4,7 @@ function S1 = PublicFundamentalModeShooting(Radius,dr,Vcoeff,thetaMax,omega,S10)
 
 FUNCTION DESCRIPTION
 
-    Returns the fundamental mode profile of the oscillon, neglecting the
+    Returns the fundamental mode profile of the PQB, neglecting the
     contribution of higher harmonics.
 
 =====================================================================
