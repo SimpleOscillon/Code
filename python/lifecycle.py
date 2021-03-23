@@ -25,6 +25,8 @@ def calculate_lifecycle(w_range, coeffs, N_harmonics=3, verbose=False):
 
 
 if __name__ == '__main__':
+    if coeffs.sum() != 1.0:
+        coeffs = np.hstack((coeffs, [1.0 - coeffs.sum()]))
     log10lifetime, power_curve, energy_curve = calculate_lifecycle(
         w_range, coeffs)
     print('log10(lifetime)=', log10lifetime)
