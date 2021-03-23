@@ -3,7 +3,8 @@ from perturbative_solver import solve_oscillon
 from matplotlib import pyplot as plt
 from progress.bar import Bar
 
-w_range = np.linspace(0.8, 0.99, 50)
+# edit these parameters:
+w_range = np.linspace(0.5, 0.99, 50)
 coeffs = np.array([1.25, -0.25])
 
 
@@ -27,8 +28,8 @@ if __name__ == '__main__':
     log10lifetime, power_curve, energy_curve = calculate_lifecycle(
         w_range, coeffs)
     print('log10(lifetime)=', log10lifetime)
-    plt.plot(w_range, power_curve)
-    plt.xlabel('Frequency (m)', fontsize=20)
-    plt.ylabel('Power (m^2)')
+    plt.plot(w_range, power_curve, 'b-', lw=2.0)
+    plt.xlabel('Frequency (m)', fontsize=14)
+    plt.ylabel('Power (m^2)', fontsize=14)
     plt.yscale('log')
     plt.show()
