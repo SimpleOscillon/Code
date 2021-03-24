@@ -5,7 +5,12 @@ from scipy.special import jn as BesselJ
 from fundamental_shooting import initial_S1
 
 
-def bessel_wrap(coeffs, indices, arguments, indices_signs):
+def bessel_wrap(coeffs: np.ndarray, indices: np.ndarray, arguments: np.ndarray,
+                indices_signs: np.ndarray) -> np.ndarray:
+    """
+    Calculates sums of Bessel functions of given indices, over potential
+    coefficients.
+    """
     return ((coeffs / np.arange(1,
                                 len(coeffs) + 1))[:, np.newaxis] *
             (indices_signs[:, np.newaxis, np.newaxis] * BesselJ(
@@ -15,7 +20,11 @@ def bessel_wrap(coeffs, indices, arguments, indices_signs):
                 arguments[np.newaxis, np.newaxis, :])).sum(axis=0)).sum(axis=0)
 
 
-def make_c_block(k, l, coeffs, w, R, S1):
+def make_c_block(k: int, l: int, coeffs: np.ndarray, w: float, R: np.ndarray,
+                 S1: np.ndarray) -> sparse.spmatrix:
+    """
+    Calculate the single-harmonic block between harmonics c_k and c_l.
+    """
     N = len(R)
     dr = R[1] - R[0]
     if k == l:
@@ -38,7 +47,11 @@ def make_c_block(k, l, coeffs, w, R, S1):
         ], [0])
 
 
-def make_S_block(k, l, coeffs, w, R, S1):
+def make_S_block(k: int, l: int, coeffs: np.ndarray, w: float, R: np.ndarray,
+                 S1: np.ndarray) -> sparse.spmatrix:
+    """
+    Calculate the single-harmonic block between harmonics S_k and S_l.
+    """
     N = len(R)
     dr = R[1] - R[0]
     if k == l:
@@ -61,7 +74,12 @@ def make_S_block(k, l, coeffs, w, R, S1):
         ], [0])
 
 
-def make_boundary_block(k, l, w, R):
+def make_boundary_block(k: int, l: int, w: float,
+                        R: np.ndarray) -> sparse.spmatrix:
+    """
+    Connection block between c_k and S_l. Its negative is the connection block
+    between S_k and c_l.
+    """
     N = len(R)
     dr = R[1] - R[0]
     if k == l:
@@ -73,7 +91,45 @@ def make_boundary_block(k, l, w, R):
         return sparse.csr_matrix((N, N), dtype=np.float)
 
 
-def solve_oscillon(w, coeffs=np.array([1.0]), N_harmonics=3, dr=0.01, L=20):
+def solve_oscillon(w: float,
+                   coeffs: np.ndarray = np.array([1.0]),
+                   N_harmonics: int = 3,
+                   dr: float = 0.01,
+                   L: float = 20.0):
+    """
+    Main function analyzing the oscillon at a given frequency.
+
+    Parameters
+    ----------
+    w : float
+        Frequency of the oscillon.
+    coeffs : np.ndarray
+        Fourier coefficients of the potential. Must sum to one.
+    N_harmonics : int, default value 3
+        Number of perturbative harmonics to consider.
+    dr : float, default value 0.01
+        Resolution of the spatial grid.
+    L : float, default value 20.0
+        The size of the box.
+
+    Returns
+    -------
+    R : np.ndarray of size (N,)
+        The equally-spaced grid of spatial points between 0 and L.
+    S1 : np.ndarray of size (N,)
+        The fundamental, non-perturbative harmonic obtained by
+        shooting.
+    c_harmonics : np.ndarray of size (N_harmonics, N)
+        c_harmonics[i, :] is the orthogonal deformation for harmonic
+        at frequency (2 * i + 3) * w.
+    S_harmonics : np.ndarray of size (N_harmonics, N)
+        S_harmonics[i, :] is the quasibreather harmonic
+        at frequency (2 * i + 3) * w.
+    power : float
+        The radiated power in the leading N_harmonics radiative harmonics.
+    energy : float
+        The energy in the non-perturbative fundamental harmonic.
+    """
 
     R = np.arange(dr, L, dr)
     N = len(R)

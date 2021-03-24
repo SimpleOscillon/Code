@@ -6,6 +6,9 @@ from scipy.optimize import root
 def shoot_S1(central_value: float, w: float, R: np.ndarray,
              coeffs: np.ndarray) -> np.ndarray:
     """
+    Shoots S1 from the center, starting from a central_value and
+    zero-drivative.
+
     Parameters
     ----------
     central_value : the value of S1 at r=0
@@ -36,13 +39,21 @@ def shoot_S1(central_value: float, w: float, R: np.ndarray,
 
 
 def initial_S1(w: float, R: np.ndarray, coeffs: np.ndarray) -> np.ndarray:
-
+    """
+    Defines the binary search procedure to find the initial condition which
+    shoots to zero at infinity.
+    """
+    # find the value at the same potential energy as the zero-field. We know
+    # the true value will be slightly higher due to friction.
     c = root(
         lambda x: 0.5 * x**2 * w**2 + 2 * (coeffs * (BesselJ0(x * np.arange(
             1,
             len(coeffs) + 1)) - 1) / np.arange(1,
                                                len(coeffs) + 1)**2).sum(),
         10).x[0]
+
+    # define the left- and right-boundaries of the search and push
+    # these values apart until they have the appropriate signs:
     l, r = c, c
     left_condition = (shoot_S1(l, w, R, coeffs)[-1] >= 0)
     while not left_condition:
@@ -54,6 +65,7 @@ def initial_S1(w: float, R: np.ndarray, coeffs: np.ndarray) -> np.ndarray:
         r = 1.5 * r
         right_condition = shoot_S1(r, w, R, coeffs)[-1] < 0
 
+    # perform the binary search for 60 steps:
     for _ in range(60):
         m = (l + r) / 2
         S1 = shoot_S1(m, w, R, coeffs)
@@ -61,5 +73,7 @@ def initial_S1(w: float, R: np.ndarray, coeffs: np.ndarray) -> np.ndarray:
             l = m
         else:
             r = m
+
+    # zero-out the far-field:
     S1[np.abs(S1).argmin():] = 0.0
     return S1
