@@ -5,7 +5,7 @@ format long
                 %sum to omegaMax^2. If the total of Vcoeff does not sum to
                 %omegaMax^2, then it an additional term will automatically
                 %be added to satisfy the mass constraint.
-Vcoeff = [3/4 1/8];
+Vcoeff = [];
 
 
                 %Fundamental periodicity of the periodic potential in units
@@ -14,7 +14,7 @@ thetaMax = 1;
 
 
 Radius = 15;    %Radius out to which the fundamental bound harmonic is computed.
-dr = 0.001;
+dr = 0.01;
 LinRef = 10;    %Number of additional grid points in the radiation computation
                 %per grid point in the fundamental mode. Higher LinRef improves
                 %the resolution of the boundary condition at the origin.
@@ -26,11 +26,10 @@ NIterations = 2;%Number of iterations accounting for linear back-reaction. 2 is
                 %typically sufficient, although more can be chosen to check
                 %convergence.
                 
-               
-                
-
 NHarmonics = 3; %Number of perturbative harmonics to compute
-OmegaList = 0.958:0.00005:0.959;
+
+OmegaList = 0.958:0.00005:0.959; %Frequencies to compute
+
 [PowerVsOmegaList,EnergyVsOmegaList,Lifetime,PowerInHarmonics,SList,CList,r]...
     = PublicPowerCurve(Radius,dr,Vcoeff,thetaMax,NHarmonics,OmegaList,LinRef,S10,NIterations);
                                             %these last four arguments can
@@ -49,6 +48,7 @@ dE = EnergyVsOmegaList(2:end,2) - EnergyVsOmegaList(1:end-1,2) ;
 disp(['log_10(lifetime) = ' num2str(log10(Lifetime))])
 figure(1)
 hold on
+%Plot the radiated power in units of f^2 where the energy is physically decreasing
 plot(PowerVsOmegaList(2:end,1),log10(-PowerVsOmegaList(2:end,2).* (dE < 0)))
 title('Power versus Frequency')
 xlabel('\omega/m')
