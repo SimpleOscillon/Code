@@ -1,4 +1,4 @@
-function [PowerVsOmegaList,EnergyVsOmegaList,Lifetime,PowerListHarmonics,SList,CList,r] = PublicPowerCurve(Radius,dr,Vcoeff,thetaMax,NHarmonics,OmegaList,LinRef,S10)
+function [PowerVsOmegaList,EnergyVsOmegaList,Lifetime,PowerListHarmonics,SList,CList,r] = PublicPowerCurve(Radius,dr,Vcoeff,thetaMax,NHarmonics,OmegaList,LinRef,S10,NIterations)
 %{
 
 FUNCTION DESCRIPTION
@@ -54,7 +54,7 @@ INPUT DESCRIPTION
         waitbar(index/length(OmegaList),f,['Frequency currently being computed: omega = ' num2str(omega)])
         index = index + 1;
         r = linspace(0,Radius,(Radius/dr) + 1)';
-        [S, C, ~] = PublicPerturbativeOscillon(Radius,dr,Vcoeff,thetaMax,NHarmonics,omega,LinRef,S10);
+        [S, C, ~] = PublicPerturbativeOscillon(Radius,dr,Vcoeff,thetaMax,NHarmonics,omega,LinRef,S10,NIterations);
         
         SList = [SList S];
         CList = [CList C];

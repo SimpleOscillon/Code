@@ -5,7 +5,7 @@ format long
                 %sum to omegaMax^2. If the total of Vcoeff does not sum to
                 %omegaMax^2, then it an additional term will automatically
                 %be added to satisfy the mass constraint.
-Vcoeff = [];
+Vcoeff = [3/4 1/8];
 
 
                 %Fundamental periodicity of the periodic potential in units
@@ -14,7 +14,7 @@ thetaMax = 1;
 
 
 Radius = 15;    %Radius out to which the fundamental bound harmonic is computed.
-dr = 0.01;
+dr = 0.001;
 LinRef = 10;    %Number of additional grid points in the radiation computation
                 %per grid point in the fundamental mode. Higher LinRef improves
                 %the resolution of the boundary condition at the origin.
@@ -22,14 +22,17 @@ LinRef = 10;    %Number of additional grid points in the radiation computation
 S10 = 5;        %Shooting range: if result does not converge make this number
                 %larger or smaller.
 
+NIterations = 2;%Number of iterations accounting for linear back-reaction. 2 is
+                %typically sufficient, although more can be chosen to check
+                %convergence.
                 
                
                 
 
-NHarmonics = 2; %Number of perturbative harmonics to compute
-OmegaList = 0.80:0.01:0.94;
+NHarmonics = 3; %Number of perturbative harmonics to compute
+OmegaList = 0.958:0.00005:0.959;
 [PowerVsOmegaList,EnergyVsOmegaList,Lifetime,PowerInHarmonics,SList,CList,r]...
-    = PublicPowerCurve(Radius,dr,Vcoeff,thetaMax,NHarmonics,OmegaList,LinRef,S10);
+    = PublicPowerCurve(Radius,dr,Vcoeff,thetaMax,NHarmonics,OmegaList,LinRef,S10,NIterations);
                                             %these last four arguments can
                                             %be used to extract the 
                                             %1) Power stored in each
