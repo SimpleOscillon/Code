@@ -19,6 +19,10 @@ LinRef = 10;    %Number of additional grid points in the radiation computation
                 %per grid point in the fundamental mode. Higher LinRef improves
                 %the resolution of the boundary condition at the origin.
                 
+NHarmonics = 3; %Number of perturbative harmonics to compute
+
+OmegaList = 0.958:0.00005:0.959; %Frequencies to compute
+                
 S10 = 5;        %Shooting range: if result does not converge make this number
                 %larger or smaller.
 
@@ -26,9 +30,6 @@ NIterations = 2;%Number of iterations accounting for linear back-reaction. 2 is
                 %typically sufficient, although more can be chosen to check
                 %convergence.
                 
-NHarmonics = 3; %Number of perturbative harmonics to compute
-
-OmegaList = 0.958:0.00005:0.959; %Frequencies to compute
 
 [PowerVsOmegaList,EnergyVsOmegaList,Lifetime,PowerInHarmonics,SList,CList,r]...
     = PublicPowerCurve(Radius,dr,Vcoeff,thetaMax,NHarmonics,OmegaList,LinRef,S10,NIterations);
