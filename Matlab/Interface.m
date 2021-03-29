@@ -17,7 +17,7 @@ Radius = 15;    %Radius out to which the fundamental bound harmonic is computed.
 dr = 0.01;
 LinRef = 10;    %Number of additional grid points in the radiation computation
                 %per grid point in the fundamental mode. Higher LinRef improves
-                %the resolution of the boundary condition at the origin.
+                %the resolution of the boundary conditions.
                 
 NHarmonics = 3; %Number of perturbative harmonics to compute
 
