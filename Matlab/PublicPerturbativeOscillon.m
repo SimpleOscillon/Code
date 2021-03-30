@@ -1,4 +1,4 @@
-function [S, C, r] = PublicPerturbativeOscillon(Radius,dr,Vcoeff,thetaMax,NHarmonics,omega,LinRef,S10)
+function [S, C, r] = PublicPerturbativeOscillon(Radius,dr,Vcoeff,thetaMax,NHarmonics,omega,LinRef,S10,NIterations)
 %{
 
 FUNCTION DESCRIPTION
@@ -37,24 +37,29 @@ INPUT DESCRIPTION
         Vcoeff = [Vcoeff thetaMax^2 - sum(Vcoeff)];
     end
     
-    RadiusRad = Radius + dr;
+    HigherHarmonicS = [];
     
-    NRad = round(RadiusRad/dr);
+    for iteration = 1 : NIterations
     
-    S1 = PublicFundamentalModeShooting(Radius,dr,Vcoeff,thetaMax,omega,S10);
-    S1 = vertcat(S1,zeros(NRad - length(S1),1));
+        S1 = PublicFundamentalModeShooting(Radius,dr,Vcoeff,thetaMax,omega,S10,HigherHarmonicS,NHarmonics);
+
+        [V0,DomS,Domc,Som] = PublicPerturbativeHigherHarmonicPotential(Radius,dr,NHarmonics,Vcoeff,thetaMax,S1,omega,LinRef);
+
+        BigMatrix = [DomS -Som;Som Domc];
+        BigVector = [-V0;zeros(size(V0))];
+               
+        SC = reshape(BigMatrix\BigVector,length(S1) * LinRef,2 * NHarmonics);
+        Stemp = [S1 SC(1:LinRef:end,1 : NHarmonics)];
+        Ctemp = [zeros(size(S1)) SC(1:LinRef:end,NHarmonics + 1 : 2 * NHarmonics)];
+        SReCompute = [zeros(size(S1)) SC(1:LinRef:end,1 : NHarmonics) zeros(size(S1))];
+        
+        r = linspace(0,Radius,length(S1))';
+        HigherHarmonicS = SReCompute./r;
+    end
     
-    [V0,DomS,Domc,Som] = PublicPerturbativeHigherHarmonicPotential(RadiusRad,dr,NHarmonics,Vcoeff,thetaMax,S1,omega,LinRef);
-    
-    BigMatrix = [DomS -Som;Som Domc];
-    BigVector = [-V0;zeros(size(V0))];
-    
-    SC = reshape(BigMatrix\BigVector,length(S1) * LinRef,2 * NHarmonics);
-    Stemp = [S1 SC(1:LinRef:end,1 : NHarmonics)];
-    Ctemp = [zeros(size(S1)) SC(1:LinRef:end,NHarmonics + 1 : 2 * NHarmonics)];
-    S = Stemp(1:end-1,:);
-    C = Ctemp(1:end-1,:);
     GridSize = length(S1) - 1;
     r = linspace(0,Radius,GridSize)';
+    S = Stemp(1:end-1,:);
+    C = Ctemp(1:end-1,:);
     
 end
