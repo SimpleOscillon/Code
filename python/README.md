@@ -19,6 +19,8 @@ L = 20.0
 dr = 0.01
 # number of perturbative harmonics:
 N_harmonics = 3
+# number of backreaction iterations:
+N_iterations = 1
 ```
 and then simply run:
 ```console

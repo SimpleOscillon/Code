@@ -8,16 +8,18 @@ from progress.bar import Bar
 ############################################################################
 
 # the values of the frequency to consider:
-w_range = np.linspace(0.7, 0.99, 100)
+w_range = np.linspace(0.5, 0.6, 30)
 # the Fourier coefficients of the potential. If they do not sum to one,
 # another one will be added to satisfy the sum:
-coeffs = np.array([0.7, -0.5, 0.5])
+coeffs = np.array([1.0])
 # the size of the spatial box:
 L = 20.0
 # the spatial step size:
 dr = 0.01
 # number of perturbative harmonics:
 N_harmonics = 3
+# number of backreaction iterations:
+N_iterations = 2
 
 ############################################################################
 # Compute power curve and lifetime:
@@ -34,7 +36,12 @@ def calculate_lifecycle(w_range, coeffs, N_harmonics=3):
     with Bar('Processing', max=len(w_range)) as bar:
         for i, w in enumerate(w_range):
             R, S1, c_harmonics, S_harmonics, power, energy = solve_oscillon(
-                w, coeffs=coeffs, N_harmonics=N_harmonics, dr=dr, L=L)
+                w,
+                coeffs=coeffs,
+                N_iterations=N_iterations,
+                N_harmonics=N_harmonics,
+                dr=dr,
+                L=L)
             power_range[i] = power
             energy_range[i] = energy
             bar.next()
@@ -42,6 +49,7 @@ def calculate_lifecycle(w_range, coeffs, N_harmonics=3):
     # lifetime is only integrated over segments of decreasing energy:
     lifetime = -(np.diff(energy_range)[np.diff(energy_range) < 0] /
                  power_range[1:][np.diff(energy_range) < 0]).sum()
+    print(np.log10(lifetime))
     return np.log10(lifetime), power_range, energy_range
 
 
