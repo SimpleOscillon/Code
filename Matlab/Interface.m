@@ -21,7 +21,7 @@ LinRef = 10;    %Number of additional grid points in the radiation computation
                 
 NHarmonics = 3; %Number of perturbative harmonics to compute
 
-OmegaList = 0.958:0.00005:0.959; %Frequencies to compute
+OmegaList = 0.8:0.01:0.97; %Frequencies to compute
                 
 S10 = 5;        %Shooting range: if result does not converge make this number
                 %larger or smaller.
