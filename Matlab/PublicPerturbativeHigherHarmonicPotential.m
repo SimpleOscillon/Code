@@ -42,7 +42,7 @@ INPUT DESCRIPTION
     r = linspace(0,Radius,GridSize)';
     dr = dr/LinRef;
     rHR = linspace(0,Radius,BigGrid)';
-    S1 = interp1(r,S1,rHR);
+    S1 = interp1(r,S1,rHR,'makima');
     
     V0 = zeros(BigGrid * NHarmonics,1);
     DomSContainer = zeros(BigGrid * NHarmonics, 2 * NHarmonics - 1);
