@@ -3,7 +3,7 @@
 Software to calculate oscillon properties in the PQB framework. Requires Matlab to run.
 
 The high-level interface can be accessed by running the code in `Interface.m`, where an oscillon model is defined by the choice of:
-- `Vcoeff` is the list of Fourier coefficients of the potential. _Additional term will be automatically added to enforce sum to be `omegaMax^2`._ Do not separate inputs by commas as per Matlab syntax.
+- `Vcoeff` is the list of Fourier coefficients of the potential. _Additional term will be automatically added to enforce sum to be `thetaMax^2`._ Do not separate inputs by commas as per Matlab syntax.
 - `thetaMax` (default value 1) is the fundamental periodicity of the potential.
 - `Radius` (default value 15) is the maximum radius of the simulation.
 - `dr` (default value 0.01) is the spatial resolution.
