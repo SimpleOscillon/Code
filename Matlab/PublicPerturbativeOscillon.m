@@ -54,11 +54,11 @@ INPUT DESCRIPTION
         SReCompute = [zeros(size(S1)) SC(1:LinRef:end,1 : NHarmonics) zeros(size(S1))];
         
         r = linspace(0,Radius,length(S1))';
-        HigherHarmonicS = SReCompute./r;
+        HigherHarmonicS = SReCompute./(r + dr * (1/LinRef));
     end
     
     GridSize = length(S1) - 1;
-    r = linspace(0,Radius,GridSize)';
+    r = linspace(0,Radius,GridSize)' + dr * (1/LinRef);
     S = Stemp(1:end-1,:);
     C = Ctemp(1:end-1,:);
     
