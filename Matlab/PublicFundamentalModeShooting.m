@@ -122,7 +122,7 @@ INPUT DESCRIPTION
                             Veff = Veff + 2 * (Vcoeff(mm)/(mm * thetaMax)) * besselj(1,mm * S1(ii + 1)/thetaMax);
                         else
                             Veff = Veff + (Vcoeff(mm)/(thetaMax^2)) * besselj(harmonicNumber - 1,mm * S1(ii + 1)/thetaMax) ...
-                                * (HigherHarmonicS(ii + 1,harmonic) - HigherHarmonicS(ii + 1,harmonic - 1))/(ii * dr);
+                                * (HigherHarmonicS(ii + 1,harmonic) - HigherHarmonicS(ii + 1,harmonic - 1));
                         end
                     end
                 end
