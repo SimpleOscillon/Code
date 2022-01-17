@@ -71,13 +71,13 @@ INPUT DESCRIPTION
         for mm = 1 : length(Vcoeff)
             S1Potential = S1Potential + (Vcoeff(mm)/mm^2) * (1 - besselj(0,mm * S1Val/thetaMax));
         end
-        r = r(1 : length(S1Val));
-        EnergyList(index) = sum(4 * pi * dr * r.^2 .* ((S1Derivative/2).^2 + omega^2 * (S1Val/2).^2 + S1Potential));
-        MassList(index) = sum(4 * pi * dr * r.^2 .*((S1Val/2).^2));
+        rext = r(1 : length(S1Val));
+        EnergyList(index) = sum(4 * pi * dr * rext.^2 .* ((S1Derivative/2).^2 + omega^2 * (S1Val/2).^2 + S1Potential));
+        MassList(index) = sum(4 * pi * dr * rext.^2 .*((S1Val/2).^2));
         
     end
     
-   
+    r = r(1:length(SList(:,1))) + dr/LinRef;
     
     PowerList = sum(PowerListHarmonics,2);
     dEdOmega = (EnergyList(1:end-1) - EnergyList(2:end));
